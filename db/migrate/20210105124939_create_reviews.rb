@@ -4,7 +4,6 @@ class CreateReviews < ActiveRecord::Migration[6.0]
       t.belongs_to :user
       t.references :reviewiable, polymorphic: true
       t.text :text
-
       t.timestamps
     end
   end

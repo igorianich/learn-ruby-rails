@@ -47,8 +47,8 @@ ActiveRecord::Schema.define(version: 2021_01_05_124939) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "nume"
-    t.string "surnume"
+    t.string "first_name"
+    t.string "last_name"
     t.integer "age"
     t.string "adress"
     t.datetime "created_at", precision: 6, null: false
