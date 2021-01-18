@@ -7,6 +7,8 @@ class User < ApplicationRecord
   belongs_to :city
 
   validates :first_name, :last_name, presence: true, length: { in: 2..30 }
-  validates :age, numericality: { only_integer: true, greater_than: 17, less_than: 111 }
+  validates :age, numericality: {
+    only_integer: true, greater_than: 17, less_than: 111
+  }
   validates :adress, presence: true, length: { in: 5..50 }
 end
