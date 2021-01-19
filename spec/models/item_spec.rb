@@ -4,29 +4,41 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 RSpec.describe Item, type: :model do
-  let!(:user) { create(:user) }
+  let!(:owner) { create(:user) }
+  let!(:name) { 'Gladiolus' }
+  let!(:price) { 24 }
 
-  it 'Item is not valid without change' do
-    # booking = Booking.new
-    expect(Item.new).to_not be_valid
+  subject do
+    build(:item, name: name, owner: owner, price: price)
   end
 
-  it 'Item is not valid without Owner' do
-    item = Item.create(price: 6, name: 'Dusha')
-      # owner: user, price: 6, name: 'Dusha'
-    expect(item.errors.messages.include?(:owner)).to be_truthy
+  context 'when item is valid' do
+    it 'is valid' do
+      expect(subject.validate).to be true
+    end
+  end
+  shared_examples :invalid_item do |error_key|
+    it 'is not valid' do
+      expect(subject.validate).to be false
+      expect(subject.errors.keys).to include(error_key)
+    end
   end
 
-  it 'Item is not valid without price' do
-    item = Item.create(owner: user, name: 'Dusha')
-    expect(item.errors.messages.include?(:price)).to be_truthy
+  context 'when item does not have name' do
+    let(:name) { nil }
+
+    it_behaves_like :invalid_item, :name
   end
 
-  it 'Item is not valid without name' do
-    item = Item.create(owner: user, price: 6)
-    expect(item.errors.messages.include?(:name)).to be_truthy
+  context 'when item does not have owner' do
+    let(:owner) { nil }
+
+    it_behaves_like :invalid_item, :owner
   end
 
+  context 'when item does not have price' do
+    let(:price) { nil }
 
-
+    it_behaves_like :invalid_item, :price
+  end
 end

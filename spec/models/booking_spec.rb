@@ -4,48 +4,61 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 RSpec.describe Booking, type: :model do
-  # pending "add some examples to (or delete) #{__FILE__}"
   let!(:item) { create(:item) }
-  let!(:user) { create(:user) }
+  let!(:borrower) { create(:user) }
+  let!(:start_rent) { DateTime.now }
+  let!(:end_rent) { DateTime.now.tomorrow }
+
+  subject do
+    build(
+      :booking, borrower: borrower, item: item, start_rent: start_rent,
+      end_rent: end_rent)
+  end
 
   it 'Booking is not valid without change' do
-    # booking = Booking.new
     expect(Booking.new).to_not be_valid
   end
 
-  it 'Booking is not valid without Item' do
-    booking = Booking.create(
-      borrower: user, start_rent: DateTime.now, end_rent: DateTime.now.tomorrow
-    )
-    expect(booking.errors.messages.include?(:item)).to be_truthy
+  context 'when booking is valid' do
+    it 'is valid' do
+      expect(subject.validate).to be true
+    end
+  end
+  shared_examples :invalid_booking do |error_key|
+    it 'is not valid' do
+      expect(subject.validate).to be false
+      expect(subject.errors.keys).to include(error_key)
+    end
   end
 
-  it 'Booking is not valid without borrower' do
-    booking = Booking.create(
-      item: item, start_rent: DateTime.now, end_rent: DateTime.now.tomorrow
-    )
-    expect(booking.errors.messages.include?(:borrower)).to be_truthy
+  context 'when booking does not have item' do
+    let(:item) { nil }
+
+    it_behaves_like :invalid_booking, :item
   end
 
-  it 'Booking is not valid without start rent' do
-    booking = Booking.create(
-      item: item, borrower: user, end_rent: DateTime.now.tomorrow
-    )
-    expect(booking.errors.messages.include?(:start_rent)).to be_truthy
+  context 'when booking does not have borrower' do
+    let(:borrower) { nil }
+
+    it_behaves_like :invalid_booking, :borrower
   end
 
-  it 'Booking is not valid without end rent' do
-    booking = Booking.create(
-      item: item, borrower: user, start_rent: DateTime.now
-    )
-    expect(booking.errors.messages.include?(:end_rent)).to be_truthy
+  context 'when booking does not have start_rent' do
+    let(:start_rent) { nil }
+
+    it_behaves_like :invalid_booking, :start_rent
   end
 
-  it 'Booking is not valid without end rent' do
-    booking = Booking.create(
-      item: item, borrower: user, start_rent: DateTime.now.tomorrow,
-      end_rent: DateTime.now
-    )
-    expect(booking.errors.messages.include?(:start_rent)).to be_truthy
+  context 'when booking does not have end_rent' do
+    let(:end_rent) { nil }
+
+    it_behaves_like :invalid_booking, :end_rent
+  end
+
+  context 'when start rent older than end rent' do
+    let(:start_rent) { DateTime.now.tomorrow }
+    let(:end_rent) { DateTime.now }
+
+    it_behaves_like :invalid_booking, :start_rent
   end
 end
