@@ -1,64 +1,64 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'rspec_api_documentation/dsl'
 
 RSpec.describe Booking, type: :model do
-  let!(:item) { create(:item) }
-  let!(:borrower) { create(:user) }
-  let!(:start_rent) { DateTime.now }
-  let!(:end_rent) { DateTime.now.tomorrow }
+  describe '#validate' do
+    subject { booking.validate }
 
-  subject do
-    build(
-      :booking, borrower: borrower, item: item, start_rent: start_rent,
-      end_rent: end_rent)
-  end
-
-  it 'Booking is not valid without change' do
-    expect(Booking.new).to_not be_valid
-  end
-
-  context 'when booking is valid' do
-    it 'is valid' do
-      expect(subject.validate).to be true
+    let(:booking) do
+      build(
+        :booking,
+        borrower: borrower, item: item, start_rent: start_rent,
+        end_rent: end_rent
+      )
     end
-  end
-  shared_examples :invalid_booking do |error_key|
-    it 'is not valid' do
-      expect(subject.validate).to be false
-      expect(subject.errors.keys).to include(error_key)
+    let!(:item) { create(:item) }
+    let!(:borrower) { create(:user) }
+    let!(:start_rent) { Time.current }
+    let!(:end_rent) { Time.current.tomorrow }
+
+    context 'when booking is valid' do
+      it 'is valid' do
+        expect(subject).to be true
+      end
     end
-  end
 
-  context 'when booking does not have item' do
-    let(:item) { nil }
+    shared_examples :invalid_booking do |error_key|
+      it 'is not valid' do
+        expect(subject).to be false
+        expect(booking.errors.keys).to include(error_key)
+      end
+    end
 
-    it_behaves_like :invalid_booking, :item
-  end
+    context 'when booking does not have item' do
+      let(:item) { nil }
 
-  context 'when booking does not have borrower' do
-    let(:borrower) { nil }
+      it_behaves_like :invalid_booking, :item
+    end
 
-    it_behaves_like :invalid_booking, :borrower
-  end
+    context 'when booking does not have borrower' do
+      let(:borrower) { nil }
 
-  context 'when booking does not have start_rent' do
-    let(:start_rent) { nil }
+      it_behaves_like :invalid_booking, :borrower
+    end
 
-    it_behaves_like :invalid_booking, :start_rent
-  end
+    context 'when booking does not have start_rent' do
+      let(:start_rent) { nil }
 
-  context 'when booking does not have end_rent' do
-    let(:end_rent) { nil }
+      it_behaves_like :invalid_booking, :start_rent
+    end
 
-    it_behaves_like :invalid_booking, :end_rent
-  end
+    context 'when booking does not have end_rent' do
+      let(:end_rent) { nil }
 
-  context 'when start rent older than end rent' do
-    let(:start_rent) { DateTime.now.tomorrow }
-    let(:end_rent) { DateTime.now }
+      it_behaves_like :invalid_booking, :end_rent
+    end
 
-    it_behaves_like :invalid_booking, :start_rent
+    context 'when start rent older than ending of rent' do
+      let(:start_rent) { 2.days.from_now }
+
+      it_behaves_like :invalid_booking, :start_rent
+    end
   end
 end

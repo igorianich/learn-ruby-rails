@@ -1,27 +1,28 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'rspec_api_documentation/dsl'
 
 RSpec.describe City, type: :model do
   describe '#validate' do
+    subject { city.validate }
+
+    let(:city) do
+      build(:city, name: name, population: population, country: country)
+    end
     let(:name) { 'Lviv' }
     let(:population) { 250_000 }
     let(:country) { 'Ukraine' }
 
-    subject do
-      build(:city, name: name, population: population, country: country)
-    end
-
-    context 'when city is valid' do
+    context 'when all fields are valid' do
       it 'is valid' do
-        expect(subject.validate).to be true
+        expect(subject).to be true
       end
     end
+
     shared_examples :invalid_city do |error_key|
       it 'is not valid' do
-        expect(subject.validate).to be false
-        expect(subject.errors.keys).to include(error_key)
+        expect(subject).to be false
+        expect(city.errors.keys).to include(error_key)
       end
     end
 
@@ -39,6 +40,12 @@ RSpec.describe City, type: :model do
 
     context 'when city does not have population' do
       let(:population) { nil }
+
+      it_behaves_like :invalid_city, :population
+    end
+
+    context "when city's population is invalid" do
+      let(:population) { '1k' }
 
       it_behaves_like :invalid_city, :population
     end
