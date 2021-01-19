@@ -4,13 +4,11 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 RSpec.describe User, type: :model do
-  # pending "add some examples to (or delete) #{__FILE__}"
   let!(:city) { create(:city) }
   let!(:first_name) { 'Petro' }
   let!(:last_name) { 'Tarasov' }
   let!(:age) { 21 }
   let!(:adress) { 'Zhopa mira' }
-  # city = City.create(name: 'Kiev', population: 250_000, country: 'Ukraine')
   subject do
     build(
       :user, first_name: first_name, last_name: last_name, age: age,

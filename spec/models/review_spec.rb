@@ -67,47 +67,4 @@ RSpec.describe Review, type: :model do
     let(:reviewable) { owner }
     it_behaves_like :invalid_reviewer, 'don\'t work with user'
   end
-
-  # context 'when reviewer does not have booking' do
-  #   let(:reviewer) { user3 }
-  #   it 'is not valid' do
-  #     expect(subject.validate).to be false
-  #     expect(subject.errors[:reviewer][0]).to eq'don\'t have bookings'
-  #   end
-  # end
-  #
-  # context 'when reviewer does not work with owner' do
-  #   let(:reviewer) { user3 }
-  #   let(:reviewable) { owner }
-  #   it 'is not valid' do
-  #     expect(subject.validate).to be false
-  #     expect(subject.errors[:reviewer][0]).to eq'don\'t work with user'
-  #     p subject.errors[:reviewer]
-  #   end
-  # end
 end
-  #
-  # it "Review can't be empty" do
-  #   expect(Review.new).to_not be_valid
-  # end
-  #
-  # it "Review can't be without Reviewer" do
-  #   review = Review.create(
-  #     reviewable: item, text: 'This is a good item'
-  #   )
-  #   expect(review.errors.messages.include?(:reviewer)).to be_truthy
-  # end
-  #
-  # it "Reviewer can't write review about item without booking" do
-  #   review = Review.create(
-  #     reviewer: user3, reviewable: item, text: 'This is a good item'
-  #   )
-  #   expect(review.errors.messages[:reviewer]).to eq(["don't have bookings"])
-  # end
-  #
-  # it "Reviewer can't write review about user without booking" do
-  #   review = Review.create(
-  #     reviewer: user3, reviewable: user, text: 'This is a good item'
-  #   )
-  #   expect(review.errors.messages[:reviewer]).to eq(["don't work with user"])
-  # end
