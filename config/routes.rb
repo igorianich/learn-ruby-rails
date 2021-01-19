@@ -1,3 +1,5 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  # get '/items', to: 'items#index'
+  resources :items, only: %i[index create show update destroy]
 end
