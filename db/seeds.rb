@@ -20,15 +20,29 @@ users = User.create(
     { first_name: 'Roman', last_name: 'Boram', city_id: 2, age: 24, adress: 'dsfdsfdgf' }
   ]
 )
+
+categories = Category.create(
+  [
+    { name: 'Boots' }, { name: 'Electronic' }, { name: 'Mahine' }, { name: 'Material' }
+  ]
+)
+
+filters = Filter.create(
+  [
+    { name: 'Size', description: 'Size of boots' },
+    { name: 'Color', description: 'Color of somesing' },
+    { name: 'Brend', description: 'Brend of something' }
+  ]
+)
 items = Item.create(
   [
-    { name: 'PC', owner_id: 1, price: 22 },
-    { name: 'Traktor', owner_id: 2, price: 22 },
-    { name: 'Samasung', owner_id: 3, price: 21 },
-    { name: 'Beton', owner_id: 4, price: 7 },
-    { name: 'Betman', owner_id: 4, price: 2 },
-    { name: 'Tank', owner_id: 4, price: 23 },
-    { name: 'Ball', owner_id: 4, price: 57 }
+    { name: 'PC', owner_id: 1, price: 22, category_id: 2 },
+    { name: 'Traktor', owner_id: 2, price: 22, category_id: 3 },
+    { name: 'Phone', owner_id: 3, price: 21, category_id: 2 },
+    { name: 'Beton', owner_id: 4, price: 7, category_id: 4 },
+    { name: 'Gavnodavi', owner_id: 4, price: 2, category_id: 1 },
+    { name: 'Tank', owner_id: 4, price: 23, category_id: 3 },
+    { name: 'Gvozd', owner_id: 4, price: 57, category_id: 4 }
   ]
 )
 bookings = Booking.create(

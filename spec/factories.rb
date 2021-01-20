@@ -1,4 +1,18 @@
 FactoryBot.define do
+  # factory :option do
+  #   name { "MyString" }
+  #   filter_id { "MyString" }
+  # end
+  #
+  # factory :category do
+  #   name { "MyString" }
+  # end
+
+  # factory :filter do
+  #   name { "MyString" }
+  #   category_id { "MyString" }
+  # end
+
 
   factory :city do
     name { 'Lviv' }

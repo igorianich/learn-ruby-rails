@@ -1,7 +1,9 @@
 class Item < ApplicationRecord
   paginates_per 3
 
+  has_and_belongs_to_many :options
   belongs_to :owner, class_name: 'User'
+  belongs_to :category
   has_many :bookings
   has_many :reviews, as: :reviewable
 
