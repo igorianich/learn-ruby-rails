@@ -1,17 +1,16 @@
 FactoryBot.define do
-  # factory :option do
-  #   name { "MyString" }
-  #   filter_id { "MyString" }
-  # end
-  #
-  # factory :category do
-  #   name { "MyString" }
-  # end
+  factory :option do
+    value { 41 }
+    filter
+  end
 
-  # factory :filter do
-  #   name { "MyString" }
-  #   category_id { "MyString" }
-  # end
+  factory :category do
+    name { "Boots" }
+  end
+
+  factory :filter do
+    name { "Size" }
+  end
 
 
   factory :city do
@@ -29,9 +28,10 @@ FactoryBot.define do
   end
 
   factory :item do
-    name { 'Refrigirator' }
+    name { 'Gavnodavy' }
     price  { 24 }
     association :owner, factory: :user
+    category
   end
 
   factory :booking do
