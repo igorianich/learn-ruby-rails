@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_13_130401) do
+ActiveRecord::Schema.define(version: 2021_01_20_111957) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,10 +26,30 @@ ActiveRecord::Schema.define(version: 2021_01_13_130401) do
     t.index ["item_id"], name: "index_bookings_on_item_id"
   end
 
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "categories_filters", id: false, force: :cascade do |t|
+    t.bigint "category_id"
+    t.bigint "filter_id"
+    t.index ["category_id"], name: "index_categories_filters_on_category_id"
+    t.index ["filter_id"], name: "index_categories_filters_on_filter_id"
+  end
+
   create_table "cities", force: :cascade do |t|
     t.string "name"
     t.integer "population"
     t.string "country"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "filters", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -40,7 +60,24 @@ ActiveRecord::Schema.define(version: 2021_01_13_130401) do
     t.bigint "owner_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "category_id"
+    t.index ["category_id"], name: "index_items_on_category_id"
     t.index ["owner_id"], name: "index_items_on_owner_id"
+  end
+
+  create_table "items_options", id: false, force: :cascade do |t|
+    t.bigint "item_id"
+    t.bigint "option_id"
+    t.index ["item_id"], name: "index_items_options_on_item_id"
+    t.index ["option_id"], name: "index_items_options_on_option_id"
+  end
+
+  create_table "options", force: :cascade do |t|
+    t.string "value"
+    t.bigint "filter_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["filter_id"], name: "index_options_on_filter_id"
   end
 
   create_table "reviews", force: :cascade do |t|

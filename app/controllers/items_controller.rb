@@ -14,7 +14,7 @@ class ItemsController < ApplicationController
   end
 
   def create
-    item = Item.new(owner: current_user, **item_params)
+    item = Item.new(owner: current_user, category: category, **item_params)
     if item.save
       render json: item
     else
@@ -39,11 +39,16 @@ class ItemsController < ApplicationController
   attr_reader :item
 
   def item_params
-    params.require(:item).permit(:name, :price)
+    params.require(:item).permit(:name, :price, :category)
   end
 
   def load_item
     (@item = Item.find_by(id: params[:id])) || head(:not_found)
+  end
+
+  def category
+    @category = Category.first
+
   end
 
   def current_user
